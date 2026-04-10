@@ -7,15 +7,16 @@ class Paint(QtWidgets.QLabel):
     def __init__(self, width, height, background='white', *args, **kwargs):
         super().__init__(*args, **kwargs)
         pixmap = QtGui.QPixmap(width, height)
-        self.setPixmap(pixmap)
 
         # Fill the canvas with the initial color.
-        painter = QtGui.QPainter(self.pixmap())
+        painter = QtGui.QPainter(pixmap)
         brush = QtGui.QBrush()
         brush.setColor(QtGui.QColor(background))
         brush.setStyle(Qt.SolidPattern)
         painter.fillRect(0, 0, pixmap.width(), pixmap.height(), brush)
         painter.end()
+
+        self.setPixmap(pixmap)
 
         self.last_x, self.last_y = None, None
         self._pen_color = QtGui.QColor('#000000')
@@ -31,15 +32,19 @@ class Paint(QtWidgets.QLabel):
         if self.last_x is None:  # First event.
             self.last_x = e.x()
             self.last_y = e.y()
-            return  #  Ignore the first time.
+            return  # Ignore the first time.
 
-        painter = QtGui.QPainter(self.pixmap())
+        pixmap = self.pixmap()
+        painter = QtGui.QPainter(pixmap)
         p = painter.pen()
         p.setWidth(self._pen_width)
         p.setColor(self._pen_color)
         painter.setPen(p)
         painter.drawLine(self.last_x, self.last_y, e.x(), e.y())
         painter.end()
+
+        self.setPixmap(pixmap)
+
         self.update()
 
         # Update the origin for next time.
@@ -55,8 +60,8 @@ class Paint(QtWidgets.QLabel):
         self.last_y = None
 
     def _flood_fill_from_event(self, e):
-
-        image = self.pixmap().toImage()
+        pixmap = self.pixmap()
+        image = pixmap.toImage()
         w, h = image.width(), image.height()
         x, y = e.x(), e.y()
 
@@ -80,7 +85,7 @@ class Paint(QtWidgets.QLabel):
             return points
 
         # Now perform the search and fill.
-        p = QtGui.QPainter(self.pixmap())
+        p = QtGui.QPainter(pixmap)
         p.setPen(QtGui.QPen(self._pen_color))
 
         while queue:
@@ -88,5 +93,8 @@ class Paint(QtWidgets.QLabel):
             if image.pixel(x, y) == target_color:
                 p.drawPoint(QtCore.QPoint(x, y))
                 queue.extend(get_cardinal_points(have_seen, (x, y)))
+
+        p.end()
+        self.setPixmap(pixmap)
 
         self.update()
