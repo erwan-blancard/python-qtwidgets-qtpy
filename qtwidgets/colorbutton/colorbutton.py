@@ -28,7 +28,7 @@ class ColorButton(QtWidgets.QPushButton):
             self.colorChanged.emit(color)
 
         if self._color:
-            self.setStyleSheet("background-color: %s;" % self._color)
+            self.setStyleSheet("ColorButton { background-color: %s; }" % self._color)
         else:
             self.setStyleSheet("")
 
