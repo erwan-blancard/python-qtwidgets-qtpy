@@ -1,8 +1,6 @@
 import os
-import sys
 
-from qtpy import QtCore, QtGui, QtWidgets
-from qtpy.QtCore import Qt, Signal
+from qtpy import QtGui, QtWidgets
 
 folder = os.path.dirname(__file__)
 

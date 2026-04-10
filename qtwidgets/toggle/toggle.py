@@ -1,5 +1,3 @@
-import sys
-
 from qtpy.QtCore import (
     Qt, QSize, QPoint, QPointF, QRectF,
     QEasingCurve, QPropertyAnimation, QSequentialAnimationGroup,

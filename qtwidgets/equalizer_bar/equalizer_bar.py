@@ -1,8 +1,5 @@
-import sys
-
 from qtpy import QtCore, QtGui, QtWidgets
 from qtpy.QtCore import Qt
-from qtpy.QtCore import Signal
 
 
 class EqualizerBar(QtWidgets.QWidget):
