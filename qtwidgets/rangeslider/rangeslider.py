@@ -1,4 +1,4 @@
-from qtpy import QtCore, QtWidgets, QtGui
+from qtpy import QtCore, QtWidgets, QtGui, QT6
 from qtpy.QtCore import Qt
 
 
@@ -145,7 +145,11 @@ class RangeSlider(QtWidgets.QWidget):
             QtWidgets.QStyle.PM_SliderThickness, self.opt, self
         )
 
-        if (
+        # TickPosition is a regular Enum in PySide6 / PyQt6
+        if (QT6 and (
+            self.opt.tickPosition.value & QtWidgets.QSlider.TicksAbove.value
+            or self.opt.tickPosition.value & QtWidgets.QSlider.TicksBelow.value
+        )) or (
             self.opt.tickPosition & QtWidgets.QSlider.TicksAbove
             or self.opt.tickPosition & QtWidgets.QSlider.TicksBelow
         ):
@@ -156,5 +160,4 @@ class RangeSlider(QtWidgets.QWidget):
             .sizeFromContents(
                 QtWidgets.QStyle.CT_Slider, self.opt, QtCore.QSize(w, h), self
             )
-            .expandedTo(QtWidgets.QApplication.globalStrut())
         )
