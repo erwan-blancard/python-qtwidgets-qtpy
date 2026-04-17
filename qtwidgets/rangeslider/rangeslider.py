@@ -145,14 +145,9 @@ class RangeSlider(QtWidgets.QWidget):
             QtWidgets.QStyle.PM_SliderThickness, self.opt, self
         )
 
-        # TickPosition is a regular Enum in PySide6 / PyQt6
-        if (QT6 and (
-            self.opt.tickPosition.value & QtWidgets.QSlider.TicksAbove.value
-            or self.opt.tickPosition.value & QtWidgets.QSlider.TicksBelow.value
-        )) or (
-            self.opt.tickPosition & QtWidgets.QSlider.TicksAbove
-            or self.opt.tickPosition & QtWidgets.QSlider.TicksBelow
-        ):
+        if self.opt.tickPosition in [QtWidgets.QSlider.TicksAbove,
+                                     QtWidgets.QSlider.TicksBelow,
+                                     QtWidgets.QSlider.TicksBothSides]:
             h += TickSpace
 
         return (
